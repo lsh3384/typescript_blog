@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div>
-      <p>hello react</p>
+      <p>PDF to JPG Converter</p>
       <PdfToJpgConverter></PdfToJpgConverter>
     </div>
   )
