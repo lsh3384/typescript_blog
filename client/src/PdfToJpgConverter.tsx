@@ -22,7 +22,7 @@ function PdfToJpgConverter() {
     const decodedPdf = atob(pdfDataTest);
     
     console.log(decodedPdf);
-    console.log(pdfjsLib);
+    console.log('pdfjsLib', pdfjsLib);
     const pdf = await pdfjs.getDocument({ data: decodedPdf }).promise;
     
     const pageNumber = 1;
@@ -49,16 +49,22 @@ function PdfToJpgConverter() {
     
     const jpegData = canvas.toDataURL('image/jpeg');
 
-    // Convert the JPEG data to a Blob object
-    const byteString = atob(jpegData.split(',')[1]);
-    const mimeType = 'image/jpeg';
-    const blob = new Blob([byteString], { type: mimeType });
+    console.log(jpegData);
     
-    // Create a URL for the Blob object and display it in an <img> tag
-    const imageUrl = URL.createObjectURL(blob);
-    console.log("imageUrl" +imageUrl)
+    // // Convert the JPEG data to a Blob object
+    // const byteString = atob(jpegData.split(',')[1]);
+    // console.log(byteString);
+    // const mimeType = 'image/jpeg';
+    // const blob = new Blob([byteString], { type: mimeType });
+    
+    // // Create a URL for the Blob object and display it in an <img> tag
+    // const imageUrl = URL.createObjectURL(blob);
+    // console.log("imageUrl" +imageUrl)
+
+    // img 태그 생성
     const imgElement = document.createElement('img');
-    imgElement.src = imageUrl;
+    // img 태그 src 속성
+    imgElement.src = jpegData;
     
     document.body.appendChild(imgElement);
     
