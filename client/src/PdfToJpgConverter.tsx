@@ -52,19 +52,22 @@ function PdfToJpgConverter() {
     console.log(jpegData);
     
     // // Convert the JPEG data to a Blob object
-    // const byteString = atob(jpegData.split(',')[1]);
-    // console.log(byteString);
-    // const mimeType = 'image/jpeg';
-    // const blob = new Blob([byteString], { type: mimeType });
+    console.log(jpegData);
+    const byteString = atob(jpegData.split(',')[1]);
+    console.log("jpegData.split result")
+    console.log(jpegData.split(',')[1]);
+    console.log(byteString);
+    const mimeType = 'image/jpeg';
+    const blob = new Blob([byteString], { type: mimeType });
     
     // // Create a URL for the Blob object and display it in an <img> tag
-    // const imageUrl = URL.createObjectURL(blob);
-    // console.log("imageUrl" +imageUrl)
+    const imageUrl = URL.createObjectURL(blob);
+    console.log("imageUrl" +imageUrl)
 
     // img 태그 생성
     const imgElement = document.createElement('img');
     // img 태그 src 속성
-    imgElement.src = jpegData;
+    imgElement.src = imageUrl;
     
     document.body.appendChild(imgElement);
     
