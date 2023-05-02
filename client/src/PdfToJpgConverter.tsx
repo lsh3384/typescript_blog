@@ -51,16 +51,20 @@ function PdfToJpgConverter() {
 
     console.log(jpegData);
     
-    // // Convert the JPEG data to a Blob object
-    console.log(jpegData);
-    const byteString = atob(jpegData.split(',')[1]);
-    console.log("jpegData.split result")
-    console.log(jpegData.split(',')[1]);
-    console.log(byteString);
-    const mimeType = 'image/jpeg';
-    const blob = new Blob([byteString], { type: mimeType });
-    
-    // // Create a URL for the Blob object and display it in an <img> tag
+    const byteCharacters = atob(jpegData.split(',')[1]);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+
+    // Create a URL for the Blob object and display it in an <img> tag
     const imageUrl = URL.createObjectURL(blob);
     console.log("imageUrl" +imageUrl)
 
@@ -68,9 +72,14 @@ function PdfToJpgConverter() {
     const imgElement = document.createElement('img');
     // img 태그 src 속성
     imgElement.src = imageUrl;
-    
     document.body.appendChild(imgElement);
-    
+
+    // a태그 생성
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = 'image.jpg';
+    document.body.appendChild(link);
+    link.click();
   }
 
   const onDocumentLoadSuccess = (pdf : PDFDocumentProxy) => {
