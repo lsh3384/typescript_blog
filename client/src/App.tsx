@@ -3,9 +3,10 @@ import axios from 'axios';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Main from './Main';
-import NotFound from './NotFound';
-import PdfToJpgConverter from './PdfToJpgConverter';
+import Main from './components/Main';
+import NotFound from './components/NotFound';
+import PdfToJpgConverter from './components/PdfToJpgConverter';
+
 
 function App() {
   const callApi = async () => {
