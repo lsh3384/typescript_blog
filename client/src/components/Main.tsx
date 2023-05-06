@@ -7,6 +7,7 @@ const Main = () => {
 			<h3>안녕하세요. Tools 입니다.</h3>
 			<ul>
 				<Link to="/converter/"><li>Pdf To Jpeg Converter</li></Link>
+				<Link to="/counter/"><li>Counter</li></Link>
 			</ul>
 		</>
 	);
