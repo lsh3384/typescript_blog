@@ -6,6 +6,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 function PdfToJpgConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [pdfData, setPdfData] = useState<string>('');
+  const fileInput = React.useRef<HTMLInputElement>(null);
+  
+  const handleButtonClick = () => {
+    if(fileInput.current) {
+      fileInput.current.click();  
+    }
+  };
 
   async function convertToJpg() {
     
@@ -85,12 +92,12 @@ function PdfToJpgConverter() {
     loadPdfData();
   }, [file]);
 
-  
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={() => convertToJpg()}>변환 후 다운로드</button>
-    </div>
+    <>
+      <button onClick={() => handleButtonClick()}>PDF파일 업로드</button>
+      <input type="file" onChange={handleFileChange} ref={fileInput} style={{ display: "none" }}/>
+      <button onClick={() => convertToJpg()}>JPG로 변환 후 다운로드</button>
+    </>
   );
 }
 

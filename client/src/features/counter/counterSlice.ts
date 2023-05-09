@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../store'
 
-// Define a type for the slice state
+// slice의 상태를 위한 타입을 정의
 interface CounterState {
   value: number
 }
 
-// Define the initial state using that type
+// 위에서 정의한 타입을 사용해서 초기상태 정의
 const initialState: CounterState = {
   value: 0,
 }
@@ -15,7 +15,7 @@ const initialState: CounterState = {
 export const counterSlice = createSlice({
   name: 'counter',
   // `createSlice` will infer the state type from the `initialState` argument
-  initialState,
+  initialState, // initialState: initialState와 동일
   reducers: {
     increment: (state) => {
       state.value += 1
@@ -23,7 +23,7 @@ export const counterSlice = createSlice({
     decrement: (state) => {
       state.value -= 1
     },
-    // Use the PayloadAction type to declare the contents of `action.payload`
+    // payloadAction 타입을 사용해서 action.payload의 내용을 정의해준다.
     incrementByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload
     },

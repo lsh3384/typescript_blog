@@ -6,8 +6,8 @@ import { RootState } from '../store';
 const Counter = () => {
     const counterValue = useSelector((state: RootState) => state.counter.value);
     const dispatch = useDispatch();
-  const handlePlusCounter = () => dispatch(increment());
-  const handleMinusCounter = () => dispatch(decrement());
+    const handlePlusCounter = () => dispatch(increment());
+    const handleMinusCounter = () => dispatch(decrement());
 	return (
 		<>
 			<p>counterValue : {counterValue}</p>
