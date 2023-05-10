@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { pdfjs} from "react-pdf";
+import "./PdfToJpgConverter.css"
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function PdfToJpgConverter() {
   const [file, setFile] = useState<File | null>(null);
   const [pdfData, setPdfData] = useState<string>('');
+  const [newFileName, setNewFileName] = useState<string>('');
   const fileInput = React.useRef<HTMLInputElement>(null);
   
   const handleButtonClick = () => {
@@ -67,10 +69,10 @@ function PdfToJpgConverter() {
     imgElement.src = imageUrl;
     document.body.appendChild(imgElement);
 
-    // a태그 생성
+    // a태그 생성 후 클릭
     const link = document.createElement('a');
     link.href = imageUrl;
-    link.download = 'image.jpg';
+    link.download = newFileName; // 파일이름 지정
     document.body.appendChild(link);
     link.click();
   }
@@ -79,7 +81,14 @@ function PdfToJpgConverter() {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
+      setNewFileName(selectedFile.name.split('.')[0] + '.jpg');
+
     }
+  }
+
+  function handleFileNameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const fileName = event.target.value;
+    setNewFileName(fileName);
   }
 
   useEffect(() => {
@@ -94,9 +103,10 @@ function PdfToJpgConverter() {
 
   return (
     <>
-      <button onClick={() => handleButtonClick()}>PDF파일 업로드</button>
+      <button className="btn" onClick={() => handleButtonClick()}>PDF파일 업로드</button>
       <input type="file" onChange={handleFileChange} ref={fileInput} style={{ display: "none" }}/>
-      <button onClick={() => convertToJpg()}>JPG로 변환 후 다운로드</button>
+      <input onChange={handleFileNameChange} placeholder="다운로드 받을 파일의 이름 입력" value={newFileName}/>
+      <button className="btn" onClick={() => convertToJpg()}>JPG로 변환 후 다운로드</button>
     </>
   );
 }
