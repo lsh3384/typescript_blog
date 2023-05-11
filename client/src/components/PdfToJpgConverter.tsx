@@ -6,8 +6,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 function PdfToJpgConverter() {
   const [file, setFile] = useState<File | null>(null);
-  const [pdfData, setPdfData] = useState<string>('');
   const [newFileName, setNewFileName] = useState<string>('');
+  const [imageLink, setImageLink] =  useState<HTMLAnchorElement>();
   const fileInput = React.useRef<HTMLInputElement>(null);
   
   const handleButtonClick = () => {
@@ -16,7 +16,7 @@ function PdfToJpgConverter() {
     }
   };
 
-  async function convertToJpg() {
+  async function convertToJpg(pdfData:string) {
     
     const pdfDataTest = pdfData.split(',')[1]
     const decodedPdf = atob(pdfDataTest);
@@ -74,16 +74,31 @@ function PdfToJpgConverter() {
     link.href = imageUrl;
     link.download = newFileName; // 파일이름 지정
     document.body.appendChild(link);
-    link.click();
+    setImageLink(link);
+    
+  }
+  
+  function downloadJpg() {
+    if(imageLink) {
+      imageLink.download = newFileName; // 파일이름 지정
+      document.body.appendChild(imageLink);
+      imageLink.click();
+    }
   }
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    console.log("handleFileChange");
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
+      console.log(selectedFile.name.split('.')[0] + '.jpg');
       setNewFileName(selectedFile.name.split('.')[0] + '.jpg');
-
+      
     }
+  }
+
+  function initializeFileInput() {
+    if(fileInput.current) fileInput.current.value="";
   }
 
   function handleFileNameChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -95,7 +110,7 @@ function PdfToJpgConverter() {
     async function loadPdfData() {
       if (file) {
         const dataUrl = await blobToBase64(file);
-        setPdfData(dataUrl);
+        convertToJpg(dataUrl);
       }
     }
     loadPdfData();
@@ -103,10 +118,10 @@ function PdfToJpgConverter() {
 
   return (
     <>
-      <button className="btn" onClick={() => handleButtonClick()}>PDF파일 업로드</button>
-      <input type="file" onChange={handleFileChange} ref={fileInput} style={{ display: "none" }}/>
-      <input onChange={handleFileNameChange} placeholder="다운로드 받을 파일의 이름 입력" value={newFileName}/>
-      <button className="btn" onClick={() => convertToJpg()}>JPG로 변환 후 다운로드</button>
+      <button className="btn" onClick={() => handleButtonClick()}>PDF파일 업로드 및 JPG 미리보기</button>
+      <input type="file" onChange={handleFileChange} onClick={() => initializeFileInput} ref={fileInput} style={{ display: "none" }}/>
+      <input onChange={handleFileNameChange} placeholder={"다운로드 받을 파일의 이름 입력"} value={newFileName}/>
+      <button className="btn" onClick={() => downloadJpg()}>JPG 파일 다운로드</button>
     </>
   );
 }
